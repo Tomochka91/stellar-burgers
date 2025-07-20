@@ -13,13 +13,9 @@ export const Feed: FC = () => {
   const dispatch = useDispatch();
   const isFeedLoading = useSelector(selectIsLoading);
 
-  /** TODO: взять переменную из стора */
   const orders: TOrder[] = useSelector(selectOrders);
 
   const handleGetFeeds = () => {
-    // if (isFeedLoading) {
-    //   return <Preloader />;
-    // }
     dispatch(fetchFeeds());
   };
 
@@ -27,5 +23,5 @@ export const Feed: FC = () => {
     return <Preloader />;
   }
 
-  return <FeedUI orders={orders} handleGetFeeds={() => handleGetFeeds()} />;
+  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
 };

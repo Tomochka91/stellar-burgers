@@ -6,6 +6,7 @@ import {
   TOrder
 } from '@utils-types';
 import { v4 as uuidv4 } from 'uuid';
+import { orderBurger } from './orderSlice';
 
 interface IConstructorItems {
   bun: TBun | null;
@@ -16,8 +17,6 @@ interface IBurgerConstructorState {
   constructorItems: IConstructorItems;
   orderRequest: boolean;
   orderModalData: TOrder | null;
-  isLoading: boolean;
-  error: string | null;
 }
 
 const initialState: IBurgerConstructorState = {
@@ -26,9 +25,7 @@ const initialState: IBurgerConstructorState = {
     ingredients: []
   },
   orderRequest: false,
-  orderModalData: null,
-  isLoading: true,
-  error: null
+  orderModalData: null
 };
 
 const burgerConstructorSlice = createSlice({
@@ -73,12 +70,27 @@ const burgerConstructorSlice = createSlice({
     },
     clearBurgerConstructor(state) {
       state.constructorItems = { bun: null, ingredients: [] };
+      state.orderRequest = false;
+      state.orderModalData = null;
     }
   },
   selectors: {
     selectConstructorItems: (sliceState) => sliceState.constructorItems,
     selectOrderRequest: (sliceState) => sliceState.orderRequest,
     selectOrderModalData: (sliceState) => sliceState.orderModalData
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(orderBurger.pending, (state) => {
+        state.orderRequest = true;
+      })
+      .addCase(orderBurger.rejected, (state) => {
+        state.orderRequest = false;
+      })
+      .addCase(orderBurger.fulfilled, (state, action) => {
+        state.orderRequest = false;
+        state.orderModalData = action.payload;
+      });
   }
 });
 

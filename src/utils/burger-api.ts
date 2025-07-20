@@ -2,7 +2,6 @@ import { setCookie, getCookie } from './cookie';
 import { TIngredient, TOrder, TOrdersData, TUser } from './types';
 
 const URL = process.env.BURGER_API_URL;
-// const URL = 'https://norma.nomoreparties.space/api';
 
 const checkResponse = <T>(res: Response): Promise<T> =>
   res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
@@ -32,9 +31,6 @@ export const refreshToken = (): Promise<TRefreshResponse> =>
         return Promise.reject(refreshData);
       }
       localStorage.setItem('refreshToken', refreshData.refreshToken);
-      console.log(refreshData);
-      console.log(document.cookie);
-      console.log(getCookie('accessToken'));
       setCookie('accessToken', refreshData.accessToken);
       return refreshData;
     });
@@ -44,7 +40,6 @@ export const fetchWithRefresh = async <T>(
   options: RequestInit
 ) => {
   try {
-    console.log('fetchWithRefresh');
     const res = await fetch(url, options);
     return await checkResponse<T>(res);
   } catch (err) {
@@ -80,7 +75,6 @@ export const getIngredientsApi = () =>
   fetch(`${URL}/ingredients`)
     .then((res) => checkResponse<TIngredientsResponse>(res))
     .then((data) => {
-      // console.log(data.data);
       if (data?.success) return data.data;
       return Promise.reject(data);
     });
@@ -159,7 +153,6 @@ export const registerUserApi = (data: TRegisterData) =>
   })
     .then((res) => checkResponse<TAuthResponse>(res))
     .then((data) => {
-      console.log('API response:', data); // Лог ответа
       if (data?.success) return data;
       return Promise.reject(data);
     });

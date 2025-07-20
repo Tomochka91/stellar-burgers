@@ -1,4 +1,3 @@
-import { ReactElement, ReactNode } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import {
   selectIsAuthChecked,
@@ -9,14 +8,10 @@ import { useSelector } from '../../services/store';
 import { Preloader } from '@ui';
 
 type ProtectedRouteProps = {
-  //   children: ReactElement;
   onlyUnAuth?: boolean;
 };
 
-export const ProtectedRoute = ({
-  //   children,
-  onlyUnAuth
-}: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ onlyUnAuth }: ProtectedRouteProps) => {
   const location = useLocation();
 
   const isAuthChecked = useSelector(selectIsAuthChecked);

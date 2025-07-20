@@ -13,32 +13,20 @@ import '../../index.css';
 import styles from './app.module.css';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useNavigate
-} from 'react-router-dom';
-import { useDispatch, useSelector } from '../../services/store';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { fetchFeeds } from '../../services/slices/feedSlice';
-import {
-  checkUser,
-  selectIsAuthenticated,
-  selectUser
-} from '../../services/slices/userSlice';
+import { checkUser } from '../../services/slices/userSlice';
 import { ProtectedRoute } from '../protected-route/ProtectedRoute';
-// import { ProtectedRoute } from '../protected-route/ProtectedRoute';
+import { clearOrderData } from '../../services/slices/orderSlice';
 
 const App = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const isAuthenticated = useSelector(selectIsAuthenticated);
-  // console.log(isAuthenticated);
-  // const user = useSelector(selectUser);
+  const location = useLocation();
+  const background = location.state?.background;
 
   useEffect(() => {
     dispatch(fetchIngredients());
@@ -49,32 +37,13 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+
+      <Routes location={background || location}>
         {/*Public Routes*/}
         <Route path='/' element={<ConstructorPage />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed' element={<Feed />} />
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal
-              title='BLABLABLA'
-              onClose={() => {}}
-              children={<OrderInfo />}
-            />
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal
-              title='Детали ингредиента'
-              onClose={() => {
-                navigate(-1);
-              }}
-              children={<IngredientDetails />}
-            />
-          }
-        />
+        <Route path='/feed/:number' element={<OrderInfo />} />
 
         {/*UnAuthorized Routes*/}
         <Route element={<ProtectedRoute onlyUnAuth />}>
@@ -88,20 +57,54 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/orders' element={<ProfileOrders />} />
-          <Route
-            path='/profile/orders/:number'
-            element={
-              <Modal
-                title='DADADA'
-                onClose={() => {}}
-                children={<OrderInfo />}
-              />
-            }
-          />
+          <Route path='/profile/orders/:number' element={<OrderInfo />} />
         </Route>
 
         <Route path='*' element={<NotFound404 />} />
       </Routes>
+
+      {/* Modal Routes */}
+      {background && (
+        <Routes>
+          <Route
+            path='/ingredients/:id'
+            element={
+              <Modal
+                title='Детали ингредиента'
+                onClose={() => {
+                  navigate(-1);
+                }}
+                children={<IngredientDetails />}
+              />
+            }
+          />
+          <Route
+            path='/feed/:number'
+            element={
+              <Modal
+                title='Детали заказа'
+                onClose={() => {
+                  navigate(-1);
+                  dispatch(clearOrderData());
+                }}
+                children={<OrderInfo />}
+              />
+            }
+          />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <Modal
+                title='Детали заказа'
+                onClose={() => {
+                  navigate(-1);
+                }}
+                children={<OrderInfo />}
+              />
+            }
+          />
+        </Routes>
+      )}
     </div>
   );
 };

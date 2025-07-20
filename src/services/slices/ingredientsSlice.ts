@@ -2,8 +2,7 @@ import { getIngredientsApi } from '@api';
 import {
   createAsyncThunk,
   createSelector,
-  createSlice,
-  PayloadAction
+  createSlice
 } from '@reduxjs/toolkit';
 import { TIngredient, TTabMode } from '@utils-types';
 
@@ -27,15 +26,11 @@ export const fetchIngredients = createAsyncThunk(
 const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
-  reducers: {
-    // getIngredients(state, action: PayloadAction<TIngredient>) {}
-  },
+  reducers: {},
   selectors: {
     selectIngredients: (sliceState) => sliceState.ingredients,
     selectIngredientById: (sliceState) => (id: string) =>
       sliceState.ingredients.find((item) => item._id === id),
-    // selectIngredientsByType: (sliceState, type: TTabMode) =>
-    //   sliceState.ingredients.filter((item) => item.type === type),
     selectIsLoading: (sliceState) => sliceState.isLoading
   },
   extraReducers: (builder) => {
@@ -64,7 +59,6 @@ export const selectIngredientsByType = createSelector(
   (ingredients, type) => ingredients.filter((item) => item.type === type)
 );
 
-// export const { getIngredients } = burgerConstructorSlice.actions;
 export const { selectIngredients, selectIngredientById, selectIsLoading } =
   ingredientsSlice.selectors;
 

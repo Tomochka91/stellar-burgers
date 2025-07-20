@@ -3,18 +3,20 @@ import { LoginUI } from '@ui-pages';
 import { useDispatch, useSelector } from '../../services/store';
 import {
   loginUser,
-  selectIsAuthenticated,
-  selectUser
+  selectIsAuthenticated
 } from '../../services/slices/userSlice';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 export const Login: FC = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const user = useSelector(selectUser);
+  const from = location.state?.from || '/';
   const isAuthenticated = useSelector(selectIsAuthenticated);
 
   useEffect(() => {
@@ -24,11 +26,17 @@ export const Login: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (!email || !password) return;
+    if (!email || !password) {
+      setError('Пожалуйста, заполните все поля формы');
+      return;
+    }
 
     dispatch(loginUser({ email, password }));
 
     localStorage.setItem('email', email);
+
+    setError('');
+    navigate(from, { replace: true });
   };
 
   if (isAuthenticated) {
@@ -37,7 +45,7 @@ export const Login: FC = () => {
 
   return (
     <LoginUI
-      errorText=''
+      errorText={error}
       email={email}
       setEmail={setEmail}
       password={password}

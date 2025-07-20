@@ -1,36 +1,44 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { useSelector } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import {
+  clearBurgerConstructor,
   selectConstructorItems,
   selectOrderModalData,
   selectOrderRequest
 } from '../../services/slices/burgerConstructorSlice';
 import { selectIsAuthenticated } from '../../services/slices/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { orderBurger } from '../../services/slices/orderSlice';
 
 export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   const constructorItems = useSelector(selectConstructorItems);
   const isAuthenticated = useSelector(selectIsAuthenticated);
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  // const constructorItems = {
-  //   bun: {
-  //     price: 0
-  //   },
-  //   ingredients: []
-  // };
-  const orderRequest = useSelector(selectOrderRequest);
 
+  const orderRequest = useSelector(selectOrderRequest);
   const orderModalData = useSelector(selectOrderModalData);
 
   const onOrderClick = () => {
     if (!constructorItems.bun || orderRequest) return;
-    if (!isAuthenticated) navigate('/login');
+
+    if (!isAuthenticated) {
+      navigate('/login', {
+        state: { from: location.pathname }
+      });
+      return;
+    }
+
+    dispatch(orderBurger());
   };
-  const closeOrderModal = () => {};
+
+  const closeOrderModal = () => {
+    dispatch(clearBurgerConstructor());
+  };
 
   const price = useMemo(
     () =>

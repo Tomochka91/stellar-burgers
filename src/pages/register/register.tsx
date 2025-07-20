@@ -14,28 +14,32 @@ export const Register: FC = () => {
 
   const user = useSelector(selectUser);
   const registerError = useSelector(selectRegisterError);
-  // console.log(user);
 
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    console.log('Store state:', { user, registerError });
     if (user) navigate('/');
   }, [user, registerError]);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (!userName || !email || !password) return;
+    if (!userName || !email || !password) {
+      setError('Пожалуйста, заполните все поля формы');
+      return;
+    }
 
     dispatch(registerUser({ email, name: userName, password }));
+
+    setError('');
   };
 
   return (
     <RegisterUI
-      errorText={registerError || ''}
+      errorText={registerError || error}
       email={email}
       userName={userName}
       password={password}
