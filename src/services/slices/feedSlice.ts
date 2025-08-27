@@ -1,4 +1,4 @@
-import { getFeedsApi } from '@api';
+import { getFeedsApi } from '../../utils/burger-api';
 import {
   createAsyncThunk,
   createSelector,
@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
-interface IOrdersState {
+export interface IOrdersState {
   orders: TOrder[];
   total: number;
   totalToday: number;
@@ -51,7 +51,8 @@ const feedSlice = createSlice({
       })
       .addCase(fetchFeeds.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || 'Failed to fetch feeds';
+        state.error =
+          action.error.message || 'Ошибка при получении данных ленты';
       })
       .addCase(fetchFeeds.fulfilled, (state, action) => {
         state.isLoading = false;

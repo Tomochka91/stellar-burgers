@@ -13,7 +13,7 @@ interface IConstructorItems {
   ingredients: TConstructorIngredient[];
 }
 
-interface IBurgerConstructorState {
+export interface IBurgerConstructorState {
   constructorItems: IConstructorItems;
   orderRequest: boolean;
   orderModalData: TOrder | null;
