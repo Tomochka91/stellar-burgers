@@ -4,17 +4,21 @@ import {
   createSlice
 } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
+import {
+  getOrderByNumberApi,
+  getOrdersApi,
+  orderBurgerApi
+} from '../../utils/burger-api';
 import { TOrder } from '@utils-types';
 
-interface IOrderState {
+export interface IOrderState {
   orderData: TOrder | null;
   userOrdersData: TOrder[] | null;
   loading: boolean;
   error: string | null;
 }
 
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
   orderData: null,
   userOrdersData: null,
   loading: false,

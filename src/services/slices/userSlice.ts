@@ -5,12 +5,12 @@ import {
   registerUserApi,
   TRegisterData,
   updateUserApi
-} from '@api';
+} from '../../utils/burger-api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import { deleteCookie, getCookie, setCookie } from '../../utils/cookie';
 
-interface IUserState {
+export interface IUserState {
   isAuthChecked: boolean;
   isAuthenticated: boolean;
   user: TUser | null;
@@ -18,7 +18,7 @@ interface IUserState {
   loginUserRequest: boolean;
 }
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
   user: null,
   isAuthChecked: false,
   isAuthenticated: false,

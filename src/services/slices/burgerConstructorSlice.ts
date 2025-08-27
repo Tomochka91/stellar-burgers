@@ -13,13 +13,13 @@ interface IConstructorItems {
   ingredients: TConstructorIngredient[];
 }
 
-interface IBurgerConstructorState {
+export interface IBurgerConstructorState {
   constructorItems: IConstructorItems;
   orderRequest: boolean;
   orderModalData: TOrder | null;
 }
 
-const initialState: IBurgerConstructorState = {
+export const initialState: IBurgerConstructorState = {
   constructorItems: {
     bun: null,
     ingredients: []
