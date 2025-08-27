@@ -6,7 +6,8 @@ import userSliceReducer, {
   logoutUser,
   userLogout,
   authChecked,
-  IUserState
+  IUserState,
+  initialState
 } from '../slices/userSlice';
 import { TUser } from '../../utils/types';
 import { TRegisterData } from '../../utils/burger-api';
@@ -25,14 +26,6 @@ const testRegisterData: TRegisterData = {
 const testLoginData: Omit<TRegisterData, 'name'> = {
   email: testRegisterData.email,
   password: testRegisterData.password
-};
-
-const initialState: IUserState = {
-  user: null,
-  isAuthChecked: false,
-  isAuthenticated: false,
-  registerUserError: null,
-  loginUserRequest: false
 };
 
 describe('Тесты экшенов регистрации пользователя', () => {

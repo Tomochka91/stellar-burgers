@@ -19,7 +19,7 @@ export interface IBurgerConstructorState {
   orderModalData: TOrder | null;
 }
 
-const initialState: IBurgerConstructorState = {
+export const initialState: IBurgerConstructorState = {
   constructorItems: {
     bun: null,
     ingredients: []

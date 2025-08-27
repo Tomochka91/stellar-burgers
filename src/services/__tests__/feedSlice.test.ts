@@ -1,6 +1,7 @@
 import feedSliceReducer, {
   fetchFeeds,
-  IOrdersState
+  IOrdersState,
+  initialState
 } from '../slices/feedSlice';
 import { TOrder } from '../../utils/types';
 
@@ -22,14 +23,6 @@ const fulfilledOrderResponse = {
 };
 
 describe('Тесты ленты заказов', () => {
-  const initialState: IOrdersState = {
-    orders: [],
-    total: 0,
-    totalToday: 0,
-    isLoading: true,
-    error: null
-  };
-
   it('Проверка обработки начала запроса (Pending)', () => {
     const pendingAction = fetchFeeds.pending('');
     const state = feedSliceReducer(initialState, pendingAction);

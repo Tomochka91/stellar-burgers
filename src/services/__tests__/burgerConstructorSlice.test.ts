@@ -3,7 +3,8 @@ import burgerConstructorSliceReducer, {
   moveIngredient,
   deleteIngredient,
   clearBurgerConstructor,
-  IBurgerConstructorState
+  IBurgerConstructorState,
+  initialState
 } from '../slices/burgerConstructorSlice';
 import { TIngredient } from '../../utils/types';
 
@@ -64,15 +65,6 @@ const mainIngredient2: TIngredient = {
 };
 
 describe('Тесты конструктора', () => {
-  const initialState: IBurgerConstructorState = {
-    constructorItems: {
-      bun: null,
-      ingredients: []
-    },
-    orderRequest: false,
-    orderModalData: null
-  };
-
   it('Проверка добавления ингредиентов', () => {
     // Пытаемся добавить булку
     let state = burgerConstructorSliceReducer(

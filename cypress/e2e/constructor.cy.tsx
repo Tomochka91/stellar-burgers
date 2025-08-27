@@ -37,7 +37,7 @@ beforeEach(() => {
   );
 
   // Открываем наш сайт
-  cy.visit('http://localhost:4000');
+  cy.visit('/');
   // Получаем мокнутые ингредиенты
   cy.wait('@getIngredients');
   cy.wait('@getUser');

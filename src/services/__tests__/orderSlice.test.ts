@@ -2,7 +2,8 @@ import orderSliceReducer, {
   getOrderByNumber,
   getUserOrders,
   IOrderState,
-  clearOrderData
+  clearOrderData,
+  initialState
 } from '../slices/orderSlice';
 import { TOrder } from '../../utils/types';
 
@@ -14,13 +15,6 @@ const testOrder: TOrder = {
   updatedAt: '',
   number: 1,
   ingredients: []
-};
-
-const initialState: IOrderState = {
-  orderData: null,
-  userOrdersData: null,
-  loading: false,
-  error: null
 };
 
 describe('Тесты запроса заказов по номеру', () => {

@@ -18,7 +18,7 @@ export interface IOrderState {
   error: string | null;
 }
 
-const initialState: IOrderState = {
+export const initialState: IOrderState = {
   orderData: null,
   userOrdersData: null,
   loading: false,
